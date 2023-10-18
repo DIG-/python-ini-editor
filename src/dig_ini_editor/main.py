@@ -1,6 +1,8 @@
 import sys
 from typing import List
+from .arguments import create_argument_parser
 
 
 def main(args: List[str] = sys.argv[1:]) -> None:
-    print("Hello World!")
+    arguments = create_argument_parser().parse_args(args)
+    print(arguments)
