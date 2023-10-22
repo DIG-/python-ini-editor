@@ -26,6 +26,8 @@ def main(args: List[str] = sys.argv[1:]) -> None:
         with sys.stdin as stream:
             editor.read(stream)
     else:
+        if arguments.get_boolean(Argument.IN_PLACE) and not arguments.get_string_optional(Argument.OUTPUT) is None:
+            raise RuntimeError("Can not write to output file and in place simultaneously")
         with open(filename, mode="rt", encoding="utf-8") as stream:
             editor.read(stream)
 
