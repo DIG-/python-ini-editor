@@ -1,7 +1,8 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from enum import Enum
+from typing import Optional
 
-__all__ = ["create_argument_parser", "Action", "Argument"]
+__all__ = ["create_argument_parser", "Action", "Argument", "Arguments"]
 
 
 class Action(str, Enum):
@@ -31,6 +32,39 @@ class Argument(str, Enum):
         if isinstance(self, str):
             return self
         return str(self)
+
+
+class Arguments(Namespace):
+    def get_boolean_optional(self, key: str) -> Optional[bool]:
+        if not hasattr(self, key):
+            return None
+        value = getattr(self, key)
+        if not isinstance(value, bool):
+            return None
+        return value
+
+    def get_boolean(self, key: str, default: bool = False) -> bool:
+        value = self.get_boolean_optional(key)
+        if value is None:
+            return default
+        return value
+
+    def get_string_optional(self, key: str) -> Optional[str]:
+        if not hasattr(self, key):
+            return None
+        value = getattr(self, key)
+        if isinstance(value, str):
+            return value
+        if isinstance(value, list) and len(value) >= 1:
+            if isinstance(value[0], str):
+                return value[0]
+        return None
+
+    def get_string(self, key: str, default: str = "") -> str:
+        value = self.get_string_optional(key)
+        if value is None:
+            return default
+        return value
 
 
 ARG_IN_PLACE = Argument.IN_PLACE.replace("_", "-")
