@@ -12,4 +12,9 @@ def main(args: List[str] = sys.argv[1:]) -> None:
         print(f"{parser.prog} {__version__}")
         return
 
+    action = arguments.get_string_optional(Argument.ACTION)
+    if action is None:
+        parser.error("Require action")
+        return
+
     print(arguments)
