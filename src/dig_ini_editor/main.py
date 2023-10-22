@@ -1,7 +1,7 @@
 import sys
-from typing import List
+from typing import List, TextIO
 from . import __version__
-from .arguments import create_argument_parser, Arguments, Argument
+from .arguments import create_argument_parser, Arguments, Argument, Action
 from .editor import Editor
 
 
@@ -31,5 +31,38 @@ def main(args: List[str] = sys.argv[1:]) -> None:
         with open(filename, mode="rt", encoding="utf-8") as stream:
             editor.read(stream)
 
-    print(arguments)
-    print(editor)
+    output: TextIO
+    if not arguments.get_string_optional(Argument.OUTPUT) is None:
+        output = open(arguments.get_string(Argument.OUTPUT), mode="wt", encoding="utf-8")
+    elif arguments.get_boolean(Argument.IN_PLACE):
+        output = open(filename, mode="wt", encoding="utf-8")
+    else:
+        output = sys.stdout
+
+    with output as stream:
+        action = arguments.get_string(Argument.ACTION)
+        if action == Action.GET:
+            output.write(
+                editor.get(
+                    arguments.get_string_optional(Argument.SECTION),
+                    arguments.get_string_optional(Argument.KEY),
+                    arguments.get_string(Argument.SEPARATOR),
+                )
+            )
+        elif action == Action.SET:
+            editor.set(
+                arguments.get_string(Argument.SECTION),
+                arguments.get_string(Argument.KEY),
+                arguments.get_string(Argument.VALUE),
+            )
+            editor.write(stream)
+        elif action == Action.DELETE:
+            editor.delete(arguments.get_string(Argument.SECTION), arguments.get_string_optional(Argument.KEY))
+            editor.write(output)
+        elif action == Action.EXISTS:
+            exists = editor.contains(
+                arguments.get_string(Argument.SECTION), arguments.get_string_optional(Argument.KEY)
+            )
+            output.write("true" if exists else "false")
+        else:
+            raise RuntimeError(f'Action "{action}" does not exists')
