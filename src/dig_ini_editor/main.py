@@ -2,6 +2,7 @@ import sys
 from typing import List
 from . import __version__
 from .arguments import create_argument_parser, Arguments, Argument
+from .editor import Editor
 
 
 def main(args: List[str] = sys.argv[1:]) -> None:
@@ -17,4 +18,16 @@ def main(args: List[str] = sys.argv[1:]) -> None:
         parser.error("Require action")
         return
 
+    editor = Editor()
+    filename = arguments.get_string(Argument.FILENAME)
+    if filename == "-":
+        if arguments.get_boolean(Argument.IN_PLACE):
+            raise RuntimeError("Can not write to in place file while reading from stdin")
+        with sys.stdin as stream:
+            editor.read(stream)
+    else:
+        with open(filename, mode="rt", encoding="utf-8") as stream:
+            editor.read(stream)
+
     print(arguments)
+    print(editor)
