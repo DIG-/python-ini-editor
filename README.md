@@ -69,11 +69,11 @@ python -m pip install dig-ini-editor
 ```
 ### From github release:
 ``` sh
-python -m pip install "https://github.com/DIG-/python-ini-editor/releases/download/1.0.0/dig_ini_editor-1.0.0-py3-none-any.whl"
+python -m pip install "https://github.com/DIG-/python-ini-editor/releases/download/1.0.1/dig_ini_editor-1.0.1-py3-none-any.whl"
 ```
 or
 ``` sh
-python -m pip install "https://github.com/DIG-/python-ini-editor/releases/download/1.0.0/dig_ini_editor.tar.gz"
+python -m pip install "https://github.com/DIG-/python-ini-editor/releases/download/1.0.1/dig_ini_editor.tar.gz"
 ```
 
 ### From github main branch:
