@@ -1,9 +1,9 @@
 from io import StringIO
 from dig_ini_editor.editor import Editor
 
-SECTION_FIRST = "main section"
-KEY_FIRST = "main key"
-VALUE_FIRST = "main value"
+SECTION_FIRST = "Main Section"
+KEY_FIRST = "Main Key"
+VALUE_FIRST = "Main Value"
 
 SECTION_SECOND = "sample"
 KEY_SECOND = "command"
