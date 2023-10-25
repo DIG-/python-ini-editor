@@ -11,7 +11,7 @@ class CustomConfigParser(ConfigParser):
 
 class Editor:
     def __init__(self) -> None:
-        self._config = CustomConfigParser()
+        self._config = CustomConfigParser(allow_no_value=True)
 
     def __repr__(self) -> str:
         return f"Editor(config={self._config})"
