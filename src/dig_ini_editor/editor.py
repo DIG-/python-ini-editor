@@ -4,9 +4,14 @@ from typing import TextIO, Optional
 __all__ = ["Editor"]
 
 
+class CustomConfigParser(ConfigParser):
+    def optionxform(self, optionstr: str) -> str:
+        return optionstr
+
+
 class Editor:
     def __init__(self) -> None:
-        self._config = ConfigParser()
+        self._config = CustomConfigParser()
 
     def __repr__(self) -> str:
         return f"Editor(config={self._config})"
